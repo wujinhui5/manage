@@ -1,0 +1,11 @@
+{
+    "data|100-150": [
+        {
+            "uid": "@id",
+            "name": "@cname",
+            "status": true,
+            "address": "@county(true)",
+            "date": "@date()"
+        }
+    ]
+}
