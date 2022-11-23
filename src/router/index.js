@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter from "vue-router"
-import AppLogin from "../pages/login/AppLogin"
-import AppInterface from "../pages/interface/AppInterface"
-import MyHome from "../pages/HomePage/MyHome"
-import AllCustomers from "../pages/customers/AllCustomers"
-import ManageUser from "../pages/userAbout/manageUser/ManageUser"
-import PersonalCenter from "../pages/userAbout/personalCenter/PersonalCenter"
-import SalesData from "../pages/shop/saleData/SalesData"
-import ShopSales from "../pages/shop/saleData/ShopSales"
-import ShopManage from "../pages/shop/manage/ShopManage"
+const AppLogin = () => import("@/pages/login/AppLogin")
+const AppInterface = () => import("@/pages/interface/AppInterface")
+const MyHome = () => import("@/pages/HomePage/MyHome")
+const AllCustomers = () => import("@/pages/customers/AllCustomers")
+const ManageManager = () => import("@/pages/manageManager/ManageManager")
+const PersonalCenter = () => import("@/pages/personalCenter/PersonalCenter")
+const SalesData = () => import("@/pages/shop/saleData/SalesData")
+const ShopSales = () => import("@/pages/shop/saleData/ShopSales")
+const ShopManage = () => import("@/pages/shop/manage/ShopManage")
 
 Vue.use(VueRouter)
 
@@ -88,7 +88,7 @@ export const routeMap = [
 
             {
                 path: '/users',
-                component: ManageUser,
+                component: ManageManager,
                 icon: 'el-icon-user-solid',
                 name: '管理员',
                 meta: { roles: ['admin'], hidden: false }

@@ -5,15 +5,14 @@ import 'nprogress/nprogress.css'
 
 // 白名单
 const whiteList = ['/login']
+let user = store.state.user
 
 router.beforeEach((to, from, next) => {
     NProgress.start()
-    let user = store.state.user
     // 无token
     if (!user.token) {
-        if (whiteList.indexOf(to.path) != -1) {
-            next()
-        } else {
+        if (whiteList.indexOf(to.path) != -1) next()
+        else {
             next('/login')
             NProgress.done()
         }
@@ -30,18 +29,18 @@ router.beforeEach((to, from, next) => {
             })
         }).catch(() => {
             store.dispatch('user/fedLogout')
-            if (to.path != '/login') {
-                next('/login')
+            if (to.path != '/login') next('/login')
+            else {
+                next()
+                NProgress.done()
             }
-            next()
-            NProgress.done()
         })
     } else {
-        if (to.path === '/login') {
-            next('/')
+        if (to.path === '/login') next('/')
+        else {
+            next()
+            NProgress.done()
         }
-        next()
-        NProgress.done()
     }
 })
 

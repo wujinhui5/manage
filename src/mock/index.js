@@ -24,4 +24,3 @@ Mock.mock('http://127.0.0.1:8081/get/shops', 'post', shopApi.getShops)
 Mock.mock('http://127.0.0.1:8081/shop/delete', 'post', shopApi.deleteShop)
 Mock.mock('http://127.0.0.1:8081/shop/change', 'post', shopApi.changeShopInfo)
 Mock.mock('http://127.0.0.1:8081/shop/create', 'post', shopApi.createShop)
-

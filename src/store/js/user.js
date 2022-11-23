@@ -40,13 +40,12 @@ export default {
             return new Promise((resolve, reject) => {
                 loginApi(val).then(res => {
                     let data = JSON.parse(res.data)
-                    if (data.meta.status === 200) {
-                        Cookies.set('token', data.data.token)
-                        commit('SET_TOKEN', data.data.token)
-                        resolve(data.meta.msg)
-                    } else {
+                    if (data.meta.status != 200) {
                         reject(data.meta.msg)
                     }
+                    Cookies.set('token', data.data.token)
+                    commit('SET_TOKEN', data.data.token)
+                    resolve(data.meta.msg)
                 }).catch(err => {
                     reject(err)
                 })
