@@ -1,16 +1,11 @@
 <template>
   <div class="app-login">
-    <!-- logo和标题 -->
-    <div class="logo">
-      <img src="../../assets/logo.png" alt="logo" />
-      <h3 class="display-none">后台管理系统</h3>
-    </div>
-
-    <div class="main">
-      <MyTips />
-      <!-- 登录表单 -->
-      <LoginForm />
-    </div>
+    <LoginForm @openDialog="openDialog" />
+    <div class="shadow"></div>
+    <!-- 账号及密码 -->
+    <el-dialog title="账号及密码" :visible.sync="dialogTableVisible"
+      ><MyTips />
+    </el-dialog>
   </div>
 </template>
 
@@ -20,39 +15,52 @@ import MyTips from "./components/MyTips";
 
 export default {
   components: { LoginForm, MyTips },
+  data() {
+    return {
+      dialogTableVisible: false,
+    };
+  },
+  methods: {
+    openDialog() {
+      this.dialogTableVisible = true;
+    },
+  },
 };
 </script>
 
-<style scoped>
-.app-login .logo {
-  height: 50px;
-  padding: 25px 50px;
-}
-
-.app-login .logo img {
-  float: left;
-  width: 50px;
-  height: 50px;
-}
-
-.app-login .logo h3 {
-  float: left;
-  height: 50px;
-  font-size: 20px;
-  line-height: 50px;
-}
-
-.app-login .main {
+<style lang="less" scoped>
+.app-login {
+  position: relative;
   min-width: 920px;
-  height: 500px;
+  height: 100vh;
   background: rgba(40, 145, 139, 0.5);
-}
-
-.app-login::after {
-  display: block;
-  content: "";
-  height: 100px;
+  .shadow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: -2;
+    transform: translate(-160px, -147px);
+    width: 340px;
+    height: 314px;
+    &::before {
+      display: block;
+      content: "";
+      width: 340px;
+      height: 314px;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      border-radius: 60px;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+  }
 }
 </style>
-
-

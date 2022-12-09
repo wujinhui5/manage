@@ -1,22 +1,26 @@
 <template>
   <div class="manage-user">
-    <!-- 面包屑 -->
-    <MyBreadcrumb :list="breadcrumb" />
-
     <!-- 主体 -->
     <div class="main">
       <div class="search-and-new">
         <!-- 搜索 -->
-        <el-input
-          class="search"
-          placeholder="请输入内容"
-          v-model="search"
-          clearable
-        >
-          <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-input>
-        <!-- 添加管理员-->
-        <AddAcount @updata="getUsers" />
+        <el-card class="operate-container" shadow="never">
+          <el-input
+            class="search"
+            placeholder="请输入内容"
+            v-model="search"
+            clearable
+          >
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+          </el-input>
+          <el-button type="primary">搜索</el-button>
+        </el-card>
+        <el-card class="operate-container" shadow="never">
+          <i class="el-icon-tickets"></i>
+          <span>数据列表</span>
+          <!-- 添加管理员-->
+          <AddAcount @updata="getUsers" />
+        </el-card>
       </div>
 
       <!-- 管理员列表 -->
@@ -53,14 +57,13 @@
 </template>
 
 <script>
-import MyBreadcrumb from "@/components/MyBreadcrumb";
 import ChangeUserInfo from "./ChangeUserInfo";
 import AddAcount from "./AddAcount";
 import DeleteAcount from "./DeleteAcount";
 import { getUsersApi } from "@/utils";
 
 export default {
-  components: { ChangeUserInfo, AddAcount, MyBreadcrumb, DeleteAcount },
+  components: { ChangeUserInfo, AddAcount, DeleteAcount },
   data() {
     return {
       breadcrumb: [{ name: "首页", path: "/" }, { name: "管理员" }],
@@ -86,7 +89,6 @@ export default {
           let data = JSON.parse(res.data);
           if (data.meta.status === 200) {
             this.usersData = data.data;
-            this.$message.success(data.meta.msg);
           } else {
             this.$message.error(data.meta.msg);
           }
@@ -129,29 +131,26 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .main {
-  background: #fff;
   padding: 5px;
   border-radius: 4px;
+  .search-and-new {
+    .operate-container {
+      margin-bottom: 20px;
+    }
+    .search {
+      margin-right: 20px;
+      width: 300px;
+    }
+    .add-acount {
+      float: right;
+      margin-top: -4px;
+    }
+  }
 }
-
-.search-and-new {
-  height: 40px;
-  margin-bottom: 10px;
-}
-
-.search-and-new .search {
-  float: left;
-  width: 200px;
-}
-
-.search-and-new .add-acount {
-  float: right;
-  margin-top: 6px;
-}
-
 .change-user-info {
+  float: left;
   margin-right: 5px;
 }
 </style>

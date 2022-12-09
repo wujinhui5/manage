@@ -1,17 +1,13 @@
 <template>
   <div class="shop-sales">
-    <!-- 面包屑 -->
-    <MyBreadcrumb :list="breadcrumb" />
     <div class="salesVolume"></div>
   </div>
 </template>
 
 <script>
-import MyBreadcrumb from "../../../components/MyBreadcrumb";
 import * as echarts from "echarts";
 
 export default {
-  components: { MyBreadcrumb },
   data() {
     return {
       breadcrumb: [

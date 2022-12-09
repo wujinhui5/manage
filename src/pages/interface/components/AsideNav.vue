@@ -10,6 +10,7 @@
     <el-menu
       class="el-menu-vertical-demo"
       background-color="#313743"
+      active-text-color="#409EFF"
       text-color="#fff"
       :collapse="isCollapse"
       router
@@ -17,7 +18,10 @@
       <template v-for="route in navList">
         <!-- 有多级标题时 -->
         <!-- eslint-disable-next-line -->
-        <el-submenu v-if="!route.meta.hidden && route.children" :index="route.path">
+        <el-submenu
+          v-if="!route.meta.hidden && route.children"
+          :index="route.path"
+        >
           <template slot="title">
             <i :class="route.icon"></i>
             <span slot="title">{{ route.name }}</span>
@@ -35,7 +39,10 @@
         </el-submenu>
         <!-- 只有一级标题时 -->
         <!-- eslint-disable-next-line -->
-        <el-menu-item v-if="!route.meta.hidden && !route.children" :index="route.path">
+        <el-menu-item
+          v-if="!route.meta.hidden && !route.children"
+          :index="route.path"
+        >
           <i :class="route.icon"></i>
           <span slot="title">{{ route.name }}</span>
         </el-menu-item>

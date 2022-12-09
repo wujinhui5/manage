@@ -3,27 +3,26 @@ import cookie from 'js-cookie'
 import NProgress from 'nprogress'
 
 let uid = "0005"
-let headPortrait = require("../../../static/img/headPortrait.jpg")
+let headPortrait = require("@/../static/img/headPortrait.jpg")
 
 for (let k in users) {
     users[k].headPortrait = headPortrait
 }
-
 
 export default {
 
     // 登录
     login: option => {
         let loginForm = JSON.parse(option.body)
+        let user = users.filter(i => i.uid === loginForm.uid)
         // 这里简单模拟下后台登录验证
-        if (users[loginForm.uid] && loginForm.password === '12345678a!') {
-
+        if (!(user == false) && loginForm.password === '12345678a!') {
             return JSON.stringify({
                 meta: {
                     msg: "登录成功",
                     status: 200
                 },
-                data: users[loginForm.uid]
+                data: user[0]
             })
         } else {
             NProgress.done()
@@ -41,14 +40,14 @@ export default {
         // 模拟从请求头获取token
         let token = cookie.get('token')
         NProgress.done()
-        for (let k in users) {
-            if (token === users[k].token) {
+        for (let i of users) {
+            if (token === i.token) {
                 return JSON.stringify({
                     meta: {
                         msg: "登录成功",
                         status: 200
                     },
-                    data: users[k]
+                    data: i
                 })
             }
         }
@@ -77,9 +76,9 @@ export default {
         NProgress.done()
         let copyUsers = JSON.parse(JSON.stringify(users))
         let data = []
-        for (let k in copyUsers) {
-            delete copyUsers[k].token
-            data.push(copyUsers[k])
+        for (let i of copyUsers) {
+            delete i.token
+            data.push(i)
         }
 
         return JSON.stringify({
@@ -95,7 +94,7 @@ export default {
     createUser: (option) => {
         let data = JSON.parse(option.body)
         data.uid = uid
-        users[data.uid] = data
+        users.unshift(data)
         uid = "000" + String(parseInt(uid) + 1)
 
         return JSON.stringify({
@@ -109,14 +108,16 @@ export default {
     // 删除管理员账号
     deleteUser: option => {
         let uid = option.body
-        if (uid in users) {
-            delete users[uid]
-            return JSON.stringify({
-                meta: {
-                    status: 200,
-                    msg: '删除成功！'
-                }
-            })
+        for (let i in users) {
+            if (users[i].uid === uid) {
+                users.splice(i, 1)
+                return JSON.stringify({
+                    meta: {
+                        status: 200,
+                        msg: '删除成功！'
+                    }
+                })
+            }
         }
         return JSON.stringify({
             meta: {
@@ -131,7 +132,7 @@ export default {
         let data = JSON.parse(option.body)
         for (let i in users) {
             if (data.uid === users[i].uid) {
-                users[i] = data
+                users[i] = { ...users[i], ...data }
                 return JSON.stringify({
                     meta: {
                         status: 200,

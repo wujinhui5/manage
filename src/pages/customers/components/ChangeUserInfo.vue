@@ -1,8 +1,11 @@
 <template>
   <div class="change-customer">
-    <el-button size="mini" type="primary" @click="changeCustomer"
-      >修改</el-button
-    >
+    <el-button
+      type="primary"
+      icon="el-icon-edit"
+      circle
+      @click="changeCustomer"
+    ></el-button>
     <el-dialog
       title="修改用户信息"
       :visible.sync="dialogFormVisible"
@@ -93,9 +96,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .change-customer {
   display: inline-block;
-  width: 56px;
 }
 </style>

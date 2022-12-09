@@ -1,13 +1,12 @@
 <template>
   <div class="MyHeader">
-    <!-- logo和标题 -->
-    <div class="logo">
-      <img src="../../../assets/logo.png" alt="logo" />
-      <h3 class="display-none">后台管理系统</h3>
+    <!-- 面包屑 -->
+    <div class="my-breadcrumb-box fl">
+      <MyBreadcrumb :list="breadcrumb" />
     </div>
 
     <!-- 用户信息及下拉菜单 -->
-    <el-dropdown @command="handleCommand">
+    <el-dropdown @command="handleCommand" class="fr">
       <span class="user-info el-dropdown-link">
         <!-- 头像 -->
         <div class="head-portrait">
@@ -28,8 +27,16 @@
 </template>
 
 <script>
+import MyBreadcrumb from "@/components/MyBreadcrumb";
+
 export default {
+  components: { MyBreadcrumb },
   props: ["isCollapse"],
+  data() {
+    return {
+      breadcrumb: [{ name: "首页", path: "/" }, { name: "管理员" }],
+    };
+  },
   methods: {
     // 下拉列表按钮触发函数
     handleCommand(command) {
@@ -61,60 +68,40 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .MyHeader {
-  background-color: #35495e;
   min-width: 200px;
-  height: 50px;
+  height: 49px;
   padding: 5px;
+  border: 1px solid #dcdfe6;
+  border-width: 0 0 1px;
   font-size: 14px;
-  color: #fff;
-  line-height: 50px;
+  .my-breadcrumb-box {
+    margin-top: 15px;
+  }
 }
-
-.logo {
-  float: left;
-  height: 50px;
-}
-
-.logo img {
-  float: left;
-  width: 50px;
-  height: 50px;
-}
-
-.logo h3 {
-  float: left;
-  height: 50px;
-  font-size: 20px;
-}
-
 .el-dropdown {
-  float: right;
-}
-
-.user-info {
-  float: right;
-  height: 50px;
-  color: #fff;
-}
-
-.user-info .head-portrait {
-  float: left;
-  width: 50px;
-  height: 50px;
-  border-radius: 30px;
-  overflow: hidden;
-}
-
-.user-info .head-portrait img {
-  width: 100%;
-  height: 100%;
-}
-
-.user-info .user-name {
-  float: right;
-  height: 100%;
+  .user-info {
+    float: right;
+    height: 50px;
+    color: #666;
+    .head-portrait {
+      float: left;
+      width: 50px;
+      height: 50px;
+      border-radius: 30px;
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .user-name {
+      float: right;
+      height: 100%;
+      line-height: 49px;
+    }
+  }
 }
 
 .el-dropdown-link {

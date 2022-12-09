@@ -1,26 +1,26 @@
-{
-    "0001": {
+[
+    {
         "uid": "0001",
         "name": "我是admin",
         "role": "admin",
         "token": "shsfhfgjfjdsfgshssfg"
     },
-    "0002": {
+    {
         "uid": "0002",
         "name": "XXX官方旗舰店",
         "role": "shopManager",
         "token": "sdfhsfhshethrtbeahrt"
     },
-    "0003": {
+    {
         "uid": "0003",
         "name": "商品管理员2",
         "role": "shopManager",
         "token": "dfhnbchrtjabrjytegnn"
     },
-    "0004": {
+    {
         "uid": "0004",
         "name": "用户管理员",
         "role": "userManager",
         "token": "dhdfjghsjhgmc456335"
     }
-}
+]

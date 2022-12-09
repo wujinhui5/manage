@@ -1,11 +1,15 @@
 <template>
-  <div class="my-tips">
-    <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="acount" label="账号"> </el-table-column>
-      <el-table-column prop="password" label="密码"> </el-table-column>
-      <el-table-column prop="roles" label="权限"> </el-table-column>
-    </el-table>
-  </div>
+  <el-table
+    class="my-tips"
+    :data="tableData"
+    border
+    style="width: 100%"
+    :span-method="objectSpanMethod"
+  >
+    <el-table-column prop="roles" label="权限"> </el-table-column>
+    <el-table-column prop="acount" label="账号"> </el-table-column>
+    <el-table-column prop="password" label="密码"> </el-table-column>
+  </el-table>
 </template>
 
 <script>
@@ -20,18 +24,22 @@ export default {
       ],
     };
   },
+  methods: {
+    objectSpanMethod({ rowIndex, columnIndex }) {
+      if (columnIndex === 2) {
+        if (rowIndex === 0) {
+          return {
+            rowspan: 4,
+            colspan: 1,
+          };
+        } else {
+          return {
+            rowspan: 0,
+            colspan: 0,
+          };
+        }
+      }
+    },
+  },
 };
 </script>
-
-<style scoped>
-.my-tips {
-  float: left;
-  width: 400px;
-  height: 380px;
-  margin: 50px 0 0 50px;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 2px 2px 4px;
-  background: #fff;
-}
-</style>

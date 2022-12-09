@@ -3,8 +3,8 @@ import VueRouter from "vue-router"
 const AppLogin = () => import("@/pages/login/AppLogin")
 const AppInterface = () => import("@/pages/interface/AppInterface")
 const MyHome = () => import("@/pages/HomePage/MyHome")
-const AllCustomers = () => import("@/pages/customers/AllCustomers")
-const ManageManager = () => import("@/pages/manageManager/ManageManager")
+const User = () => import("@/pages/customers/AllCustomers")
+const Role = () => import("@/pages/manageManager/ManageManager")
 const PersonalCenter = () => import("@/pages/personalCenter/PersonalCenter")
 const SalesData = () => import("@/pages/shop/saleData/SalesData")
 const ShopSales = () => import("@/pages/shop/saleData/ShopSales")
@@ -45,9 +45,9 @@ export const routeMap = [
             {
                 path: '/salesdata',
                 redirect: '/salesdata/sale',
-                name: '销售数据',
+                name: '数据中心',
                 icon: 'el-icon-data-board',
-                meta: { roles: ['shopManager'], hidden: false },
+                meta: { roles: ['shopManager', 'admin'], hidden: false },
                 component: {
                     render(c) { return c("router-view") }
                 },
@@ -57,7 +57,7 @@ export const routeMap = [
                         component: SalesData,
                         icon: 'el-icon-data-line',
                         name: '销量',
-                        meta: { roles: ['shopManager'], hidden: false }
+                        meta: { roles: ['shopManager', 'admin'], hidden: false }
                     },
 
                     {
@@ -65,17 +65,36 @@ export const routeMap = [
                         component: ShopSales,
                         icon: 'el-icon-pie-chart',
                         name: '销售额占比',
-                        meta: { roles: ['shopManager'], hidden: false }
+                        meta: { roles: ['shopManager', 'admin'], hidden: false }
                     },
                 ]
             },
 
             {
-                path: '/cusomers',
-                component: AllCustomers,
-                icon: 'el-icon-user',
-                name: '用户管理',
-                meta: { roles: ['userManager', 'admin'], hidden: false }
+                path: '/manage',
+                redirect: '/manage/user',
+                icon: "el-icon-key",
+                name: "用户管理",
+                meta: { roles: ['userManager', 'admin'], hidden: false },
+                component: {
+                    render(c) { return c("router-view") }
+                },
+                children: [
+                    {
+                        path: 'user',
+                        component: User,
+                        icon: 'el-icon-user',
+                        name: '会员管理',
+                        meta: { roles: ['userManager', 'admin'], hidden: false }
+                    },
+                    {
+                        path: 'role',
+                        component: Role,
+                        icon: 'el-icon-user-solid',
+                        name: '权限管理',
+                        meta: { roles: ['admin'], hidden: false }
+                    },
+                ]
             },
 
             {
@@ -83,20 +102,13 @@ export const routeMap = [
                 component: ShopManage,
                 icon: 'el-icon-shopping-bag-2',
                 name: '商品管理',
-                meta: { roles: ['shopManager'], hidden: false }
-            },
-
-            {
-                path: '/users',
-                component: ManageManager,
-                icon: 'el-icon-user-solid',
-                name: '管理员',
-                meta: { roles: ['admin'], hidden: false }
+                meta: { roles: ['admin','shopManager'], hidden: false }
             },
 
             {
                 path: '/personal',
                 component: PersonalCenter,
+                name: '个人中心',
                 meta: { hidden: true }
             }
         ]

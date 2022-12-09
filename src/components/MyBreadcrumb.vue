@@ -13,12 +13,30 @@
 
 <script>
 export default {
-  props: ["list"],
+  data() {
+    return {
+      list: [],
+    };
+  },
+  watch: {
+    $route: {
+      immediate: true,
+      handler() {
+        let matched = this.$route.matched.filter((i) => i.name);
+        const first = matched[0];
+        if (first && first.name !== "首页") {
+          matched.unshift({ path: "/home", name: "首页" });
+        }
+        this.list = matched;
+      },
+    },
+  },
 };
 </script>
 
-<style>
+<style lang="less" scoped>
 .my-breadcrumb {
-  margin-bottom: 5px;
+  height: 20px;
+  line-height: 20px;
 }
 </style>

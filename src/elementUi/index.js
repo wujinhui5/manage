@@ -10,8 +10,10 @@ import {
     Dropdown,
     DropdownMenu,
     DropdownItem,
+    Submenu,
     Menu,
     MenuItem,
+    MenuItemGroup,
     Container,
     Table,
     TableColumn,
@@ -23,6 +25,7 @@ import {
     BreadcrumbItem,
     Option,
     Select,
+    Card,
     Message
 } from 'element-ui';
 
@@ -36,8 +39,10 @@ Vue.use(Col);
 Vue.use(Dropdown);
 Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
+Vue.use(Submenu);
 Vue.use(Menu);
 Vue.use(MenuItem);
+Vue.use(MenuItemGroup);
 Vue.use(Container);
 Vue.use(Table);
 Vue.use(TableColumn);
@@ -48,6 +53,7 @@ Vue.use(Input);
 Vue.use(Breadcrumb);
 Vue.use(BreadcrumbItem);
 Vue.use(Option);
+Vue.use(Card);
 Vue.use(Select);
 
 Vue.prototype.$message = Message;

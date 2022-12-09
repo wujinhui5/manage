@@ -1,5 +1,5 @@
 <template>
-  <el-button size="mini" type="danger" @click="handleDelete">删除</el-button>
+  <el-button type="danger" icon="el-icon-delete" circle @click="handleDelete"></el-button>
 </template>
 
 <script>

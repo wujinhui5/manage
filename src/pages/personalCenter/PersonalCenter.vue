@@ -1,8 +1,5 @@
 <template>
   <div class="personal-center">
-    <!-- 面包屑 -->
-    <MyBreadcrumb :list="breadcrumb" />
-
     <!-- 表格 -->
     <div class="table">
       <HeadPortrait @updata="updata" />
@@ -22,11 +19,10 @@
 
 <script>
 import HeadPortrait from "./components/HeadPortrait";
-import MyBreadcrumb from "@/components/MyBreadcrumb";
 import ChangeUname from "./components/ChangeUname";
 
 export default {
-  components: { MyBreadcrumb, ChangeUname, HeadPortrait },
+  components: { ChangeUname, HeadPortrait },
   data() {
     return {
       breadcrumb: [{ name: "个人中心" }],

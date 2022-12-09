@@ -1,15 +1,11 @@
 
 <template>
   <div class="shop-sales">
-    <!-- 面包屑 -->
-    <MyBreadcrumb :list="breadcrumb" />
     <div class="shop-sales-container"></div>
   </div>
 </template>
 
 <script>
-import MyBreadcrumb from "../../../components/MyBreadcrumb";
-
 const echarts = require("echarts/lib/echarts");
 require("echarts/lib/component/title");
 require("echarts/lib/component/tooltip");
@@ -17,7 +13,6 @@ require("echarts/lib/component/legend");
 require("echarts/lib/chart/pie");
 
 export default {
-  components: { MyBreadcrumb },
   data() {
     return {
       breadcrumb: [
