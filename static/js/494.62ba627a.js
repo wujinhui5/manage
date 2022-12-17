@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkmanagement"]=self["webpackChunkmanagement"]||[]).push([[494],{3494:function(t,n,e){e.r(n),e.d(n,{default:function(){return c}});var r=function(){var t=this,n=t._self._c;return n("div",{staticClass:"container"},[n("h1",[t._v("很抱歉，页面迷路了！")]),n("p",[t._v("请检查您输入的网址是否正确,或者点击以下按钮返回主页")]),n("router-link",{attrs:{to:"/"}},[n("el-button",{attrs:{type:"primary",round:""}},[t._v("返回首页")])],1)],1)},a=[],u={},s=u,l=e(1001),i=(0,l.Z)(s,r,a,!1,null,"1b39faf2",null),c=i.exports}}]);
+//# sourceMappingURL=494.62ba627a.js.map

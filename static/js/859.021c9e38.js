@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkmanagement"]=self["webpackChunkmanagement"]||[]).push([[859],{2859:function(t,e,n){n.r(e),n.d(e,{default:function(){return c}});var a=function(){var t=this,e=t._self._c;return e("div",{staticClass:"add-completed"},[e("p",[t._v("商品添加成功！")]),e("el-button",[e("router-link",{attrs:{to:"/shop/add"}},[t._v("添加更多商品")])],1),e("el-button",[e("router-link",{attrs:{to:"/shop/manage"}},[t._v("查看商品列表")])],1)],1)},u=[],r={},s=r,l=n(1001),o=(0,l.Z)(s,a,u,!1,null,"60da2a86",null),c=o.exports}}]);
+//# sourceMappingURL=859.021c9e38.js.map
