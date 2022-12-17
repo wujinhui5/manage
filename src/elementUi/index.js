@@ -25,8 +25,12 @@ import {
     BreadcrumbItem,
     Option,
     Select,
+    Steps,
+    Step,
     Card,
-    Message
+    Upload,
+    Message,
+    MessageBox
 } from 'element-ui';
 
 Vue.use(Pagination);
@@ -55,5 +59,9 @@ Vue.use(BreadcrumbItem);
 Vue.use(Option);
 Vue.use(Card);
 Vue.use(Select);
+Vue.use(Steps);
+Vue.use(Step);
+Vue.use(Upload);
 
 Vue.prototype.$message = Message;
+Vue.prototype.$confirm = MessageBox.confirm;

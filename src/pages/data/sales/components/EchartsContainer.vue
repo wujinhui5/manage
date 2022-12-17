@@ -5,16 +5,32 @@
 </template>
 
 <script>
-import * as echarts from "echarts";
+import * as echarts from 'echarts/core';
+import {
+  TitleComponent,
+  ToolboxComponent,
+  TooltipComponent,
+  GridComponent,
+  LegendComponent
+} from 'echarts/components';
+import { LineChart } from 'echarts/charts';
+import { UniversalTransition } from 'echarts/features';
+import { CanvasRenderer } from 'echarts/renderers';
+
+echarts.use([
+  TitleComponent,
+  ToolboxComponent,
+  TooltipComponent,
+  GridComponent,
+  LegendComponent,
+  LineChart,
+  CanvasRenderer,
+  UniversalTransition
+]);
 
 export default {
   data() {
     return {
-      breadcrumb: [
-        { name: "首页", path: "/" },
-        { name: "销量数据" },
-        { name: "销量" },
-      ],
       option: {
         title: {
           text: "商品销量",

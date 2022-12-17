@@ -1,30 +1,16 @@
 <template>
   <div class="manage-shop">
     <!-- 搜索框 -->
-    <el-card class="operate-container" shadow="never">
-      <div class="title">
-        <i class="el-icon-search"></i>
-        <span>筛选搜索</span>
-        <el-button
-          class="btn-search fr"
-          type="primary"
-          size="small"
-          @click="handleSearch"
-          >搜索</el-button
-        >
-        <el-button class="btn-reset fr" @click="handleResetSearch" size="small">
-          重置
-        </el-button>
-      </div>
+    <search @handleReset="handleResetSearch" @handleSearch="handleSearch">
       <el-input
         class="search"
         placeholder="请输入内容"
-        v-model="search.key"
+        v-model="queryList.key"
         clearable
       >
         <i slot="prefix" class="el-input__icon el-icon-search"></i>
       </el-input>
-      <el-select v-model="search.state" placeholder="所有商品" clearable>
+      <el-select v-model="queryList.state" placeholder="所有商品" clearable>
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -34,14 +20,13 @@
         >
         </el-option>
       </el-select>
-    </el-card>
-    <!-- 数据 -->
-    <el-card class="operate-container" shadow="never">
-      <i class="el-icon-tickets"></i>
-      <span>数据列表</span>
-      <!-- 添加商品-->
-      <AddShop @updata="getShops" />
-    </el-card>
+    </search>
+    <!-- 添加商品 -->
+    <add>
+      <el-button size="mini" type="primary">
+        <router-link to="/shop/add" style="color:#fff;">添加</router-link>
+      </el-button>
+    </add>
     <!-- 商品列表 -->
     <el-table :data="shops" style="width: 100%" border>
       <el-table-column prop="index" label="编号" width="60px" align="center">
@@ -51,19 +36,34 @@
           <img class="shopImg" :src="scope.row.imgUrl" :alt="scope.row.title" />
         </template>
       </el-table-column>
-      <el-table-column prop="title" label="商品名"> </el-table-column>
-      <el-table-column prop="price" label="价格" width="60px">
+      <el-table-column prop="title" label="商品名" align="center">
       </el-table-column>
-      <el-table-column prop="inventory" label="库存" width="60px">
+      <el-table-column label="价格/货号" width="100" align="center">
+        <template slot-scope="scope">
+          <p>￥{{ scope.row.price }}</p>
+          <p>{{ scope.row.shopId }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="inventory"
+        label="库存"
+        width="60px"
+        align="center"
+      >
       </el-table-column>
       <el-table-column prop="state" label="状态" width="60px" align="center">
       </el-table-column>
-      <el-table-column label="操作" width="138px">
+      <el-table-column label="操作" width="138px" align="center">
         <template slot-scope="scope">
           <template>
             <!-- 修改商品信息弹窗 -->
             <ChangeShopInfo :currentShop="scope.row" @updata="getShops" />
-            <DeleteShop :id="scope.row.shopId" @updata="getShops" />
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleDeleteShop(scope.row.shopId)"
+              >删除</el-button
+            >
           </template>
         </template>
       </el-table-column>
@@ -71,8 +71,8 @@
     <!-- 分页 -->
     <el-pagination
       @current-change="handleCurrentChange"
-      :current-page.sync="pagingData.currentPage"
-      :page-size="pagingData.pageSize"
+      :current-page.sync="queryList.currentPage"
+      :page-size="queryList.pageSize"
       layout="prev, pager, next, jumper"
       :total="total"
     >
@@ -82,11 +82,11 @@
 
 <script>
 import ChangeShopInfo from "./components/ChangeShopInfo";
-import AddShop from "./components/AddShop";
-import DeleteShop from "./components/DeleteShop";
-import { getShopsApi } from "../../../utils/shop";
+import Add from "@/components/tableListAddBox";
+import Search from "@/components/tableFilter";
+import { getShopsApi, deleteShopApi } from "@/utils/shop";
 
-let requestData = {
+let defaultQueryList = {
   currentPage: 1,
   pageSize: 5,
   state: "",
@@ -94,10 +94,9 @@ let requestData = {
 };
 
 export default {
-  components: { ChangeShopInfo, AddShop, DeleteShop },
+  components: { ChangeShopInfo, Add, Search },
   data() {
     return {
-      breadcrumb: [{ name: "首页", path: "/" }, { name: "商品管理" }],
       shops: [],
       total: 0,
       options: [
@@ -114,22 +113,13 @@ export default {
           label: "未通过",
         },
       ],
-      search: {
-        state: "",
-        key: "",
-      },
-      pagingData: {
-        currentPage: 1,
-        pageSize: 5,
-      },
+      queryList: { ...defaultQueryList },
     };
   },
+  created() {
+    this.getShops();
+  },
   methods: {
-    // 列表项编号
-    indexMethod(index) {
-      return index + 1;
-    },
-
     verifyState() {
       this.shops.forEach((i) => {
         i.state =
@@ -140,73 +130,69 @@ export default {
             : "不通过";
       });
     },
-
     // 获取商品数据
     getShops() {
-      getShopsApi(requestData)
+      let { $message, verifyState } = this;
+      getShopsApi(this.queryList)
         .then((res) => {
           let data = JSON.parse(res.data);
           if (data.meta.status === 200) {
             this.shops = data.data;
             this.total = data.total;
-            this.verifyState();
-          } else {
-            this.$message.error(data.meta.msg);
-          }
+            verifyState();
+          } else $message.error(data.meta.msg);
         })
-        .catch((err) => {
-          this.$message.error(err);
-        });
+        .catch((err) => $message.error(err));
     },
-
     // 切换页码
     handleCurrentChange(page) {
-      requestData.currentPage = this.pagingData.currentPage = page;
+      this.queryList.currentPage = page;
       this.getShops();
     },
-
     // 搜索
     handleSearch() {
-      requestData = { ...requestData, ...this.search, currentPage: 1 };
+      this.queryList.currentPage = 1;
       this.getShops();
     },
-
     // 重置搜索条件
     handleResetSearch() {
-      this.search = { key: "", state: "" };
+      this.queryList = { ...defaultQueryList };
     },
-  },
-
-  created() {
-    this.getShops();
+    // 删除确认
+    handleDeleteShop(id) {
+      this.$confirm("此操作将永久删除该商品, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.updateDeleteShop(id);
+        })
+        .catch(() => {});
+    },
+    // 删除商品
+    updateDeleteShop(id) {
+      let { $message, getShops } = this;
+      deleteShopApi({ shopId: id })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.meta.status === 200) {
+            $message.success(data.meta.msg);
+            getShops();
+          } else $message.error(data.meta.msg);
+        })
+        .catch((err) => $message.error(err));
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
 .manage-shop {
-  background: #fff;
-  margin-top: 5px;
-  padding: 5px;
-  border-radius: 4px;
-  .operate-container {
-    margin-bottom: 20px;
-    .title {
-      margin-bottom: 20px;
-      .btn-reset {
-        margin-right: 10px;
-      }
-    }
-    .search {
-      margin-right: 20px;
-      width: 200px;
-    }
-  }
-  .add-shop {
-    float: right;
-    margin-top: -4px;
-  }
   .el-table {
+    p {
+      margin: 12px 0;
+    }
     .change-shop-info {
       display: inline-block;
       margin-right: 5px;

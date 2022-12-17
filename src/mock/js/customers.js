@@ -12,18 +12,24 @@ axios({
     customers = res.data.data
 })
 
-
 export default {
 
     // 获取用户名单
-    getCustomer() {
+    getCustomer(option) {
         NProgress.done()
+        let { currentPage, pageSize, key } = JSON.parse(option.body)
+        let res = customers.filter(i => i.address.indexOf(key) !== -1 || i.name.indexOf(key) !== -1)
+        let total = res.length
+        res = res.slice((currentPage - 1) * pageSize, currentPage * pageSize)
         return JSON.stringify({
             meta: {
                 status: 200,
                 msg: "获取用户成功！"
             },
-            data: customers
+            data: {
+                total,
+                list:res
+            }
         })
     },
 

@@ -57,23 +57,26 @@ export default {
         return;
       }
       let fileReader = new FileReader();
+      console.log(this.imgFile, JSON.stringify([this.imgFile]));
       fileReader.readAsDataURL(this.imgFile);
       fileReader.onload = (evt) => {
-        let data={
-            uid:this.$store.state.user.uid,
-            headPortrait:evt.target.result
-        }
-        changeHeadPortraitApi(data).then(res=>{
-            let data=JSON.parse(res.data)
-            if(data.meta.status===200){
-                this.$message.success(data.meta.msg)
-                this.$emit("updata")
-            }else{
-                this.$message.error(data.meta.msg)
+        let data = {
+          uid: this.$store.state.user.uid,
+          headPortrait: evt.target.result,
+        };
+        changeHeadPortraitApi(data)
+          .then((res) => {
+            let data = JSON.parse(res.data);
+            if (data.meta.status === 200) {
+              this.$message.success(data.meta.msg);
+              this.$emit("updata");
+            } else {
+              this.$message.error(data.meta.msg);
             }
-        }).catch(err=>{
-            this.$message.error(err)
-        })
+          })
+          .catch((err) => {
+            this.$message.error(err);
+          });
       };
     },
   },

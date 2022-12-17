@@ -1,7 +1,7 @@
 <template>
   <div class="change-shop-info">
     <!-- 按钮 -->
-    <el-button size="mini" type="primary" @click="changeUser">修改</el-button>
+    <el-button size="mini" @click="changeUser">修改</el-button>
 
     <!-- 对话框 -->
     <el-dialog
@@ -14,7 +14,10 @@
           <el-input v-model="form.title" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="库存" label-width="120px" prop="inventory">
-          <el-input v-model.number="form.inventory" autocomplete="off"></el-input>
+          <el-input
+            v-model.number="form.inventory"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="价格" label-width="120px" prop="price">
           <el-input v-model.number="form.price" autocomplete="off"></el-input>
@@ -66,9 +69,11 @@ export default {
     completeChange() {
       this.$refs.form.validate((valid) => {
         if (!valid) return;
+        let form = this.form;
+        delete form["state"];
         let data = {
-          shopId: this.form.shopId,
-          new: this.form,
+          shopId: form.shopId,
+          new: form,
         };
         changeShopInfoApi(data)
           .then((res) => {

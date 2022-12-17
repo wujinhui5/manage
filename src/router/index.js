@@ -6,8 +6,6 @@ const MyHome = () => import("@/pages/HomePage/MyHome")
 const User = () => import("@/pages/customers/AllCustomers")
 const Role = () => import("@/pages/manageManager/ManageManager")
 const PersonalCenter = () => import("@/pages/personalCenter/PersonalCenter")
-const SalesData = () => import("@/pages/shop/saleData/SalesData")
-const ShopSales = () => import("@/pages/shop/saleData/ShopSales")
 const ShopManage = () => import("@/pages/shop/manage/ShopManage")
 
 Vue.use(VueRouter)
@@ -22,12 +20,19 @@ const router = new VueRouter({
     routes: [
         {
             path: '/login',
-            component: AppLogin
+            component: AppLogin,
+            meta: { hidden: true }
+        },
+        {
+            path: '/404',
+            component: () => import("@/pages/404"),
+            meta: { hidden: true }
         }
     ]
 })
 
 export const routeMap = [
+
     {
         path: '/',
         component: AppInterface,
@@ -41,7 +46,6 @@ export const routeMap = [
                 component: MyHome,
                 meta: { hidden: false },
             },
-
             {
                 path: '/salesdata',
                 redirect: '/salesdata/sale',
@@ -53,23 +57,21 @@ export const routeMap = [
                 },
                 children: [
                     {
-                        path: 'sale',
-                        component: SalesData,
+                        path: 'sales',
+                        component: () => import("@/pages/data/sales"),
                         icon: 'el-icon-data-line',
                         name: '销量',
                         meta: { roles: ['shopManager', 'admin'], hidden: false }
                     },
-
                     {
-                        path: 'shopsales',
-                        component: ShopSales,
+                        path: 'salesVolume',
+                        component: () => import("@/pages/data/salesVolume"),
                         icon: 'el-icon-pie-chart',
                         name: '销售额占比',
                         meta: { roles: ['shopManager', 'admin'], hidden: false }
                     },
                 ]
             },
-
             {
                 path: '/manage',
                 redirect: '/manage/user',
@@ -88,7 +90,7 @@ export const routeMap = [
                         meta: { roles: ['userManager', 'admin'], hidden: false }
                     },
                     {
-                        path: 'role',
+                        path: 'manager',
                         component: Role,
                         icon: 'el-icon-user-solid',
                         name: '权限管理',
@@ -96,15 +98,35 @@ export const routeMap = [
                     },
                 ]
             },
-
             {
-                path: '/shopmanage',
-                component: ShopManage,
-                icon: 'el-icon-shopping-bag-2',
-                name: '商品管理',
-                meta: { roles: ['admin','shopManager'], hidden: false }
+                path: '/shop',
+                redirect: '/shop/manage',
+                component: { render(c) { return c("router-view") } },
+                icon: 'el-icon-shopping-bag-1',
+                name: '商品',
+                meta: { roles: ['admin', 'shopManager'], hidden: false },
+                children: [
+                    {
+                        path: 'manage',
+                        component: ShopManage,
+                        icon: 'el-icon-shopping-bag-2',
+                        name: '商品管理',
+                        meta: { roles: ['admin', 'shopManager'], hidden: false },
+                    },
+                    {
+                        path: 'add',
+                        icon: 'el-icon-circle-plus-outline',
+                        name: '添加商品',
+                        component: () => import('@/pages/shop/add'),
+                        meta: { roles: ['admin', 'shopManager'], hidden: false }
+                    },
+                    {
+                        path: 'addCompleted',
+                        component: () => import('@/pages/shop/add/addCompleted.vue'),
+                        meta: { roles: ['admin', 'shopManager'], hidden: true }
+                    }
+                ]
             },
-
             {
                 path: '/personal',
                 component: PersonalCenter,
@@ -112,6 +134,11 @@ export const routeMap = [
                 meta: { hidden: true }
             }
         ]
+    },
+    {
+        path: '*',
+        redirect: '/404',
+        meta: { hidden: true }
     }
 ]
 

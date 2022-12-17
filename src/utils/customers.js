@@ -1,9 +1,10 @@
 import fetch from "./fetch.js"
 
-export function getAllCustomersApi() {
+export function getAllCustomersApi(data) {
     return fetch({
         method: 'post',
         url: "/get/customers",
+        data
     })
 }
 

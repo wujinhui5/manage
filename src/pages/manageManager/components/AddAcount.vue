@@ -12,7 +12,6 @@
     <el-dialog
       title="修改管理员信息"
       :visible.sync="dialogFormVisible"
-      :before-close="cancelAdd"
     >
       <el-form :model="form" ref="form" :rules="rules" status-icon>
         <el-form-item label="用户名" label-width="120px" prop="name">
@@ -41,7 +40,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelAdd">取 消</el-button>
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="completeAdd">注 册</el-button>
       </div>
     </el-dialog>
@@ -91,11 +90,6 @@ export default {
     };
   },
   methods: {
-    // 取消添加
-    cancelAdd() {
-      this.dialogFormVisible = false;
-    },
-
     // 完成添加
     completeAdd() {
       this.$refs.form.validate((valid) => {
@@ -118,3 +112,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  .add-acount{
+    float:right;
+  }
+</style>

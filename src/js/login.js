@@ -17,31 +17,33 @@ router.beforeEach((to, from, next) => {
             NProgress.done()
         }
     }
-
-    // 有token，但没有用户权限，需要获取用户信息和菜单权限
-    if (!user.role) {
-        // 获取用户信息
-        store.dispatch('user/getInfo').then(() => {
-            // 获取菜单权限
-            store.dispatch('permission/createAddRoutes', user.role).then(() => {
-                router.addRoute(...store.state.permission.addRoutes)
-                next(to.path)
+    else {
+        // 有token，但没有用户权限，需要获取用户信息和菜单权限
+        if (!user.role) {
+            // 获取用户信息
+            store.dispatch('user/getInfo').then(() => {
+                // 获取菜单权限
+                store.dispatch('permission/createAddRoutes', user.role).then(() => {
+                    store.state.permission.addRoutes.forEach(i=>router.addRoute(i))
+                    next(to.path)
+                })
+            }).catch(() => {
+                store.dispatch('user/fedLogout')
+                if (to.path != '/login') next('/login')
+                else {
+                    next()
+                    NProgress.done()
+                }
             })
-        }).catch(() => {
-            store.dispatch('user/fedLogout')
-            if (to.path != '/login') next('/login')
+        } else {
+            if (to.path === '/login') next('/')
             else {
                 next()
                 NProgress.done()
             }
-        })
-    } else {
-        if (to.path === '/login') next('/')
-        else {
-            next()
-            NProgress.done()
         }
     }
+
 })
 
 router.afterEach(() => {

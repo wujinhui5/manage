@@ -9,21 +9,21 @@
     <div class="total-layout">
       <el-row :gutter="20">
         <el-col :span="8">
-          <router-link class="total-frame" to="/salesdata/sale">
+          <router-link class="total-frame" to="/salesdata/sales">
             <i class="el-icon-s-order"></i>
             <div class="total-title">今日订单总数</div>
             <div class="total-value big-font-one">200</div>
           </router-link>
         </el-col>
         <el-col :span="8">
-          <router-link class="total-frame" to="/salesdata/shopsales">
+          <router-link class="total-frame" to="/salesdata/salesVolume">
             <i class="el-icon-coin"></i>
             <div class="total-title">今日累计销售额</div>
             <div class="total-value big-font-one">￥5000.00</div>
           </router-link>
         </el-col>
         <el-col :span="8">
-          <router-link class="total-frame" to="/salesdata/shopsales">
+          <router-link class="total-frame" to="/salesdata/salesVolume">
             <i class="el-icon-coin"></i>
             <div class="total-title">7天总销售额</div>
             <div class="total-value big-font-one">￥50000.00</div>

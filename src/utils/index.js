@@ -23,10 +23,11 @@ export function logoutApi(data) {
     })
 }
 
-export function getUsersApi() {
+export function getUsersApi(data) {
     return fetch({
         method: 'post',
-        url: '/get/users'
+        url: '/get/users',
+        data: data
     })
 }
 

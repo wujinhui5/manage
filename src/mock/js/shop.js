@@ -39,15 +39,13 @@ export default {
             role = verRes.data
         }
         // 根据不同商家返回不同的商品
-        let {pageSize, currentPage, state, key } = JSON.parse(option.body)
+        let { pageSize, currentPage, state, key } = JSON.parse(option.body)
         let res = role.role === 'admin' ? shops : shops.filter(item => item["storeId"] === role.uid)
-        res = res.filter(item => {
-            return item["state"].indexOf(state) !== -1 && (item["title"].indexOf(key) !== -1 || item["shopId"].indexOf(key) !== -1)
-        })
+        res = res.filter(item => item["state"].indexOf(state) !== -1 && (item["title"].indexOf(key) !== -1 || item["shopId"].indexOf(key) !== -1))
         let total = res.length
         res = res.slice((currentPage - 1) * pageSize, currentPage * pageSize)
         res.forEach((i, index) => {
-            i.imgUrl = require(`@/mock/images/shops/${i.shopId}/${i.shopPic[0]}`)
+            i.imgUrl = i.imgUrl ? i.imgUrl : require(`@/mock/images/shops/${i.shopId}/${i.shopPic[0]}`)
             i.index = (currentPage - 1) * pageSize + index + 1
         })
         if (!(res == false)) {
@@ -69,13 +67,11 @@ export default {
             total: 0
         })
     },
-
     // 下架商品
     deleteShop: option => {
-        let data = JSON.parse(option.body)
-        console.log(data.shopId)
+        let shopId = JSON.parse(option.body).shopId
         for (let i in shops) {
-            if (data.shopId === shops[i].shopId) {
+            if (shopId === shops[i].shopId) {
                 shops.splice(i, 1)
                 return JSON.stringify({
                     meta: {
@@ -92,7 +88,6 @@ export default {
             }
         })
     },
-
     // 修改商品信息
     changeShopInfo: option => {
         let data = JSON.parse(option.body)
@@ -114,20 +109,11 @@ export default {
             }
         })
     },
-
-
     // 添加商品
     createShop: function (option) {
-        let data = JSON.parse(option.body)
-        // if (!currentShops) {
-        //     return JSON.stringify({
-        //         meta: {
-        //             status: 999,
-        //             msg: '添加失败，请稍后再试！'
-        //         }
-        //     })
-        // }
-        let newShop = {
+        let { newShop, uid } = JSON.parse(option.body)
+        console.log(newShop.shopPic[0])
+        let defaultNewShop = {
             shopPic: [
                 "46881335fd2e1f0a.jpg.avif",
                 "f3d8ad82ce64412e.jpg.avif"
@@ -138,15 +124,15 @@ export default {
                 "twoDoorRefrigerator"
             ]
         }
-        data.new.shopId = id
-        data.new.storeId = data.uid
+        newShop.shopId = id
+        newShop.storeId = uid
         let date = new Date()
         let date1 = [date.getFullYear(), date.getMonth() + 1, date.getDate()].join('-')
         let date2 = [date.getHours(), date.getMinutes(), date.getSeconds()].join(':')
-        data.new.dateOnSale = [date1, date2].join(' ')
+        newShop.dateOnSale = [date1, date2].join(' ')
         id = String(parseInt(id) + 1)
-        shops.unshift({ ...newShop, ...data.new, state: "uncheck" })
-
+        newShop.imgUrl = newShop.shopPic[0]
+        shops.unshift({ ...defaultNewShop, ...newShop, state: "uncheck" })
         return JSON.stringify({
             meta: {
                 status: 200,

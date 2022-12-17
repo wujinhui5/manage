@@ -6,11 +6,26 @@
 </template>
 
 <script>
-const echarts = require("echarts/lib/echarts");
-require("echarts/lib/component/title");
-require("echarts/lib/component/tooltip");
-require("echarts/lib/component/legend");
-require("echarts/lib/chart/pie");
+import * as echarts from "echarts/core";
+import {
+  TitleComponent,
+  ToolboxComponent,
+  TooltipComponent,
+  LegendComponent,
+} from "echarts/components";
+import { PieChart } from "echarts/charts";
+import { LabelLayout } from "echarts/features";
+import { CanvasRenderer } from "echarts/renderers";
+
+echarts.use([
+  TitleComponent,
+  ToolboxComponent,
+  TooltipComponent,
+  LegendComponent,
+  PieChart,
+  CanvasRenderer,
+  LabelLayout,
+]);
 
 export default {
   data() {

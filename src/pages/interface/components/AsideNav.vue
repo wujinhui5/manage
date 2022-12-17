@@ -27,14 +27,16 @@
             <span slot="title">{{ route.name }}</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item
-              v-for="routeChild in route.children"
-              :key="routeChild.path"
-              :index="route.path + '/' + routeChild.path"
-            >
-              <i :class="routeChild.icon"></i>
-              <span slot="title">{{ routeChild.name }}</span>
-            </el-menu-item>
+            <template v-for="routeChild in route.children">
+              <el-menu-item
+                v-if="!routeChild.meta.hidden"
+                :key="routeChild.path"
+                :index="route.path + '/' + routeChild.path"
+              >
+                <i :class="routeChild.icon"></i>
+                <span slot="title">{{ routeChild.name }}</span>
+              </el-menu-item>
+            </template>
           </el-menu-item-group>
         </el-submenu>
         <!-- 只有一级标题时 -->
@@ -57,14 +59,8 @@ export default {
     return {
       isCollapse: false,
       isHidden: false,
+      navList: this.$store.state.permission.addRoutes[0].children,
     };
-  },
-
-  computed: {
-    // 根据路由生成导航栏目录
-    navList: function () {
-      return this.$store.state.permission.addRoutes[0].children;
-    },
   },
 };
 </script>
@@ -90,12 +86,11 @@ export default {
   border: 0;
   font-size: 16px;
   font-weight: 700;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
-  min-height: 400px;
 }
 </style>
 

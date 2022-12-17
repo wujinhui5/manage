@@ -10,7 +10,6 @@ for (let k in users) {
 }
 
 export default {
-
     // 登录
     login: option => {
         let loginForm = JSON.parse(option.body)
@@ -34,7 +33,6 @@ export default {
             })
         }
     },
-
     // 获取用户信息
     getInfo: () => {
         // 模拟从请求头获取token
@@ -58,7 +56,6 @@ export default {
             }
         })
     },
-
     // 登出
     logout: option => {
         let uid = option.body
@@ -70,26 +67,29 @@ export default {
             }
         })
     },
-
     // 获取所有管理员信息
-    getUsers: () => {
+    getUsers: option => {
         NProgress.done()
+        let { currentPage, pageSize, key } = JSON.parse(option.body)
         let copyUsers = JSON.parse(JSON.stringify(users))
-        let data = []
-        for (let i of copyUsers) {
+        copyUsers = copyUsers.filter(i => i.uid.indexOf(key) !== -1 || i.name.indexOf(key) !== -1)
+        let total = copyUsers.length
+        copyUsers = copyUsers.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+        copyUsers.forEach((i, index) => {
             delete i.token
-            data.push(i)
-        }
-
+            i.index = (currentPage - 1) * pageSize + index + 1
+        })
         return JSON.stringify({
             meta: {
                 status: 200,
                 msg: "获取管理员成功！"
             },
-            data
+            data: {
+                total,
+                list: copyUsers
+            }
         })
     },
-
     // 添加管理员
     createUser: (option) => {
         let data = JSON.parse(option.body)
@@ -104,7 +104,6 @@ export default {
             }
         })
     },
-
     // 删除管理员账号
     deleteUser: option => {
         let uid = option.body
@@ -126,7 +125,6 @@ export default {
             }
         })
     },
-
     // 修改其他管理员信息
     changeUserInfo: option => {
         let data = JSON.parse(option.body)
@@ -148,7 +146,6 @@ export default {
             }
         })
     },
-
     // 修改个人用户名
     changeUserName: option => {
         let data = JSON.parse(option.body)
@@ -170,7 +167,6 @@ export default {
             }
         })
     },
-
     // 修改个人头像
     changeHeadPortrait: option => {
         let data = JSON.parse(option.body)
